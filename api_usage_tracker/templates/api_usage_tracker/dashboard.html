@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>API Usage Dashboard</h1>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Endpoints</h5>
+                    <p class="card-text">{{ total_endpoints }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Deprecated Endpoints</h5>
+                    <p class="card-text">{{ deprecated_endpoints }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Most Used Endpoint</h5>
+                    <p class="card-text">{{ most_used_endpoint }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2 class="mt-4">Endpoint Usage Details</h2>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>View Name</th>
+                <th>Method</th>
+                <th>First Called</th>
+                <th>Last Called</th>
+                <th>Total Calls</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for endpoint in endpoints %}
+            <tr>
+                <td>{{ endpoint.view_name }}</td>
+                <td>{{ endpoint.method }}</td>
+                <td>{{ endpoint.first_called }}</td>
+                <td>{{ endpoint.last_called }}</td>
+                <td>{{ endpoint.total_calls }}</td>
+                <td>
+                    {% if endpoint.is_deprecated %}
+                    <span class="badge bg-warning">Deprecated</span>
+                    {% else %}
+                    <span class="badge bg-success">Active</span>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
