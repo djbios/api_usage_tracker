@@ -1,0 +1,4 @@
+include LICENSE
+include README.md
+recursive-include api_usage_tracker/templates *
+recursive-include api_usage_tracker/static *
