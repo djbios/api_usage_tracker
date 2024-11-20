@@ -1,0 +1,77 @@
+{% extends "api_usage_tracker/base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>API Usage Statistics</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Total Endpoints</h5>
+                    <p class="card-text display-4">{{ total_endpoints }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Deprecated</h5>
+                    <p class="card-text display-4">{{ deprecated_endpoints }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Most Used</h5>
+                    <p class="card-text">{{ most_used_endpoint.view_name }}</p>
+                    <small class="text-muted">{{ most_used_endpoint.total_calls }} calls</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Least Used</h5>
+                    <p class="card-text">{{ least_used_endpoint.view_name }}</p>
+                    <small class="text-muted">{{ least_used_endpoint.total_calls }} calls</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Endpoint</th>
+                    <th>Method</th>
+                    <th>First Called</th>
+                    <th>Last Called</th>
+                    <th>Total Calls</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for endpoint in endpoints %}
+                <tr>
+                    <td>{{ endpoint.view_name }}</td>
+                    <td><span class="badge bg-secondary">{{ endpoint.method }}</span></td>
+                    <td>{{ endpoint.first_called|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ endpoint.last_called|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ endpoint.total_calls }}</td>
+                    <td>
+                        {% if endpoint.is_deprecated %}
+                        <span class="badge bg-warning">Deprecated</span>
+                        {% else %}
+                        <span class="badge bg-success">Active</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

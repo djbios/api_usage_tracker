@@ -21,11 +21,9 @@ class APIEndpointUsage(models.Model):
         """
         Check if endpoint is deprecated based on last usage
         """
-        deprecation_days = getattr(
-            settings.API_USAGE_TRACKER, 
-            'DEPRECATION_DAYS', 
-            90
-        )
+        deprecation_days = getattr(settings, 'API_USAGE_TRACKER', {}).get('DEPRECATION_DAYS', 90)
+        if not self.last_called:
+            return False
         return (timezone.now() - self.last_called).days > deprecation_days
     
     def __str__(self):
